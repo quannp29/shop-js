@@ -1,0 +1,11 @@
+extends ../../layouts/default.pug
+
+block main
+  if(role.permissions.includes("roles_view"))
+    if (data.title)
+      h1(class="mb-4") Tên nhóm quyền: #{data.title}
+    
+    if (data.description)
+      div(class="mb-4") Mô tả: !{data.description}
+  else 
+    h1 Cannot access

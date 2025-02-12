@@ -1,0 +1,16 @@
+extends ../../layouts/default.pug
+
+block main
+  if (record.title)
+    h1(class="mb-4") Danh mục bài viết: #{record.title}
+  
+  if (record.status)
+    div(class="mb-4")
+      span Trạng thái:
+      if (record.status === "active")
+        span(class="badge badge-success") Hoạt động
+      else
+        span(class="badge badge-danger") Dừng hoạt động
+  
+  if (record.description)
+    div(class="mb-4") Mô tả: !{record.description}

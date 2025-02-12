@@ -1,0 +1,32 @@
+extends ../../layouts/default.pug
+
+block main
+  if(role.permissions.includes("accounts_view"))
+    if (account.fullName)
+      h1(class="mb-4") Họ tên: <b>#{account.fullName}</b>
+
+    if (account.email)
+      div(class="mb-4") Email: <b>#{account.email}</b>
+
+    if (account.phone)
+      div(class="mb-4") Số điện thoại: <b>#{account.phone}%</b>
+    
+    if (role)
+      div(class="mb-4") Nhóm quyền: <b>#{data.title}</b>
+    
+    if (account.avatar)
+      div(class="mb-4")
+        img(
+          src=account.avatar
+          style="width: 100px"
+        )
+    
+    if (account.status)
+      div(class="mb-4")
+        span Trạng thái:
+        if (account.status === "active")
+          span(class="badge badge-success") Hoạt động
+        else
+          span(class="badge badge-danger") Dừng hoạt động
+  else 
+    h1 Cannot access

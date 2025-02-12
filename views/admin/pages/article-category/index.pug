@@ -1,0 +1,135 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+include ../../mixins/filter.pug
+include ../../mixins/search.pug
+include ../../mixins/pagination.pug
+
+block main
+  +alert-success()
+  +alert-error()
+
+  if(role.permissions.includes("article-category_view"))
+    h1(class="mb-4") Danh mục bài viết
+
+    .card.mb-3
+      .card-header Bộ lọc và Tìm kiếm
+      .card-body
+        .row
+          .col-6
+            +filter(filterStatus)          
+          .col-6
+            +search(keyword)  
+    
+    .card.mb-3
+      .card-header Sắp xếp
+      .card-body
+        .row
+          .col-4
+            div(sort)
+              select(
+                class="form-control"
+                name="sort"
+                sort-select
+              )
+                option(value="") Mặc định
+                option(value="title-asc") Tiêu đề A - Z
+                option(value="title-desc") Tiêu đề Z - A
+
+    .card.mb-3
+      .card-header Danh sách
+      .card-body
+        .row
+          .col-8
+          .col-4.text-right
+            if(role.permissions.includes("article-category_create"))
+              a(
+                href=`/${prefixAdmin}/article-category/create`
+                class="btn btn-outline-success"
+              ) + Thêm mới
+
+        table(
+          class="table table-hover table-sm"
+        )
+          thead
+            tr
+              th STT
+              th Hình ảnh
+              th Tiêu đề
+              th Trạng thái
+              th Tạo bởi
+              th Cập nhật bởi
+              th Hành động
+          tbody
+            each item, index in records
+              tr
+                td #{index + 1}
+                td
+                  img(
+                    src=item.thumbnail
+                    alt=item.title
+                    width="100px"
+                    height="auto"
+                  )
+                td #{item.title}
+                td
+                  if(role.permissions.includes("article-category_edit"))
+                    if (item.status === "active")
+                      a(
+                        href="javascript:;"
+                        class="badge badge-success"
+                        data-status="inactive"
+                        data-id=item.id
+                        button-change-status
+                      ) Hoạt động
+                    else
+                      a(
+                        href="javascript:;"
+                        class="badge badge-danger"
+                        data-status="active"
+                        data-id=item.id
+                        button-change-status
+                      ) Dừng hoạt động
+                  else 
+                    if(item.status === "active") 
+                      div(
+                        class="badge badge-success"
+                      ) Hoạt động
+                    else 
+                      div(
+                        class="badge badge-danger"
+                      ) Dừng hoạt động
+                td
+                  div #{item.createdByFullName}
+                  div #{moment(item.createdAt).format("DD/MM/YYYY HH:mm")}
+                td
+                  div #{item.updatedByFullName}
+                  div #{moment(item.updatedAt).format("DD/MM/YYYY HH:mm")}
+                td
+                  a(
+                    class="btn btn-info btn-sm"
+                    href=`/${prefixAdmin}/article-category/detail/${item.id}`
+                  ) Chi tiết
+
+                  if(role.permissions.includes("article-category_edit"))
+                    a(
+                      class="btn btn-warning btn-sm ml-1"
+                      href=`/${prefixAdmin}/article-category/edit/${item.id}`
+                    ) Sửa
+
+                  //- button(
+                  //-   class="btn btn-danger btn-sm ml-1"
+                  //-   button-delete
+                  //-   data-id=item.id
+                  //- ) Xóa
+    
+    +pagination(objectPagination)
+
+    if(role.permissions.includes("article-category_edit"))
+      form(
+        form-change-status
+        method="POST"
+        action=""
+        data-path=`/${prefixAdmin}/article-category/change-status`
+      )
+  else 
+    h1 Cannnot access

@@ -1,0 +1,22 @@
+extends ../../layouts/default.pug
+
+block main
+  if(role.permissions.includes("products-category_view"))
+    if (category.title)
+      h1(class="mb-4") Danh mục: #{category.title}
+
+    if(parentName)
+      div(class="mb-4") Danh mục cha: #{parentName}
+    
+    if (category.status)
+      div(class="mb-4")
+        span Trạng thái:
+        if (category.status === "active")
+          span(class="badge badge-success") Hoạt động
+        else
+          span(class="badge badge-danger") Dừng hoạt động
+    
+    if (category.description)
+      div(class="mb-4") Mô tả: !{category.description}
+  else 
+    h1 Cannot access

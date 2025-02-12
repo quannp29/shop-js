@@ -1,0 +1,185 @@
+extends  ../../layouts/default.pug
+include ../../mixins/filter.pug
+include ../../mixins/search.pug
+include ../../mixins/pagination.pug
+include ../../mixins/alert.pug
+
+block main
+  +alert-success()
+  +alert-error()
+
+  if(role.permissions.includes("article_view"))
+
+    h1(class="mb-4") Danh sách bài viết
+    
+    .card.mb-3
+      .card-header Bộ lọc và Tìm kiếm
+      .card-body
+        .row
+          .col-6
+            +filter(filterStatus)          
+          .col-6
+            +search(keyword)
+    
+    .card.mb-3
+      .card-header Sắp xếp
+      .card-body
+        .row
+          .col-4
+            div(sort)
+              select(
+                class="form-control"
+                name="sort"
+                sort-select
+              )
+                option(value="position-desc") Vị trí giảm dần
+                option(value="position-asc") Vị trí tăng dần
+                option(value="title-asc") Tiêu đề A - Z
+                option(value="title-desc") Tiêu đề Z - A
+              button(
+                class="btn btn-danger mt-2"
+                sort-clear
+              ) Clear
+
+    .card.mb-3
+      .card-header Danh sách
+      .card-body
+        .row 
+          .col-8
+            if(role.permissions.includes("article_edit"))
+              form(
+                action=`/${prefixAdmin}/articles/change-multi?_method=PATCH`
+                method="POST"
+                form-change-multi
+              )
+                .d-flex.align-items-start
+                  .form-group.mr-3
+                    select(name="type" class="form-control")
+                      option(value="active") Hoạt động
+                      option(value="inactive") Dừng hoạt động
+                      option(value="change-position") Thay đổi vị trí
+                      //- if(role.permissions.includes("article_delete"))
+                      //-   option(value="delete-all") Xóa tất cả
+                  .form-group.d-none
+                    input(
+                      type="text"
+                      name="ids"
+                      value=""
+                      class="form-control"
+                    )
+                  button(type="submit" class="btn btn-primary") Áp dụng
+          .col-4.text-right
+            if(role.permissions.includes("article_create"))
+              a(
+                href=`/${prefixAdmin}/articles/create`
+                class="btn btn-outline-success"
+              ) + Thêm mới
+
+        table(
+          class="table table-hover table-sm"
+          checkbox-multi
+        )
+          thead
+            tr
+              td
+                input(type="checkbox" name="checkall")
+              th STT
+              th Hình ảnh
+              th Tiêu đề
+              th Vị trí
+              th Trạng thái
+              th Tạo bởi
+              th Cập nhật bởi
+              th Hành động
+          tbody
+            each item, index in records
+              tr
+                td
+                  input(type="checkbox" name="id" value=item.id)
+                td #{objectPagination.limitItems * (objectPagination.currentPage - 1) + index + 1}
+                td
+                  img(
+                    src=item.thumbnail
+                    alt=item.title
+                    width="100px"
+                    height="auto"
+                  )
+                td #{item.title}
+                td
+                  input(
+                    name="position"
+                    value=item.position
+                    type="number"
+                    style="width: 60px;"
+                    min="1"
+                  )
+                td
+                  if(role.permissions.includes("article_edit"))
+                    if(item.status == "active")
+                        a(
+                          href="javascript:;"
+                          button-change-status
+                          data-id=item.id
+                          data-status="inactive"
+                          class="badge badge-success"
+                        ) Hoạt động
+                    else
+                      a(
+                        href="javascript:;"
+                        button-change-status
+                        data-id=item.id
+                        data-status="active"
+                        class="badge badge-danger"
+                      ) Dừng hoạt động
+                  else 
+                    if(item.status == "active") 
+                      div(
+                        class="badge badge-success"
+                      ) Hoạt động
+                    else 
+                      div(
+                        class="badge badge-danger"
+                      ) Dừng hoạt động
+
+                td
+                  div #{item.createdByFullName}
+                  div #{moment(item.createdAt).format("DD/MM/YYYY HH:mm")}
+                td
+                  div #{item.updatedByFullName}
+                  div #{moment(item.updatedAt).format("DD/MM/YYYY HH:mm")}
+                td
+                  a(
+                    href=`/${prefixAdmin}/articles/detail/${item.id}`
+                    class="btn btn-info btn-sm ml-1"
+                  ) Chi tiết
+                  if(role.permissions.includes("article_edit"))
+                    a(
+                      href=`/${prefixAdmin}/articles/edit/${item.id}`
+                      class="btn btn-warning btn-sm"
+                    ) Sửa
+                  if(role.permissions.includes("article_delete"))
+                    button(
+                      class="btn btn-danger btn-sm ml-1"
+                      button-delete
+                      data-id=item.id
+                    ) Xóa
+
+    +pagination(objectPagination)
+    
+    if(role.permissions.includes("article_edit"))
+      form(
+        form-change-status
+        method="POST"
+        action=""
+        data-path=`/${prefixAdmin}/articles/change-status`
+      )
+    
+    if(role.permissions.includes("article_delete"))
+      form(
+        form-delete-item
+        method="POST"
+        action=""
+        data-path=`/${prefixAdmin}/articles/delete`
+      )
+  else 
+    h1 Cannot access

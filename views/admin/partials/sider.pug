@@ -1,0 +1,40 @@
+.sider
+  .inner-menu
+    ul 
+      li
+        a(href=`/${prefixAdmin}/dashboard`) Tổng quan
+      if(role.permissions.includes("products_view"))
+        li
+          a(href=`/${prefixAdmin}/products`) Sản phẩm
+      
+      if(role.permissions.includes("products-category_view"))
+        li
+          a(href=`/${prefixAdmin}/products-category`) Danh mục sản phẩm
+      
+      if(role.permissions.includes("roles_view"))
+        li
+          a(href=`/${prefixAdmin}/roles`) Nhóm quyền
+      
+      if(role.permissions.includes("roles_permissions"))
+        li
+          a(href=`/${prefixAdmin}/roles/permissions`) Phân quyền
+      
+      if(role.permissions.includes("accounts_view"))
+        li
+          a(href=`/${prefixAdmin}/accounts`) Tài khoản
+
+      if(role.permissions.includes("products_restore"))
+        li
+          a(href=`/${prefixAdmin}/productsBin`) Khôi phục sản phẩm
+      
+      if(role.permissions.includes("article-category_view"))
+        li
+          a(href=`/${prefixAdmin}/article-category`) Danh mục bài viết
+      
+      if(role.permissions.includes("article_view"))
+        li
+          a(href=`/${prefixAdmin}/articles`) Bài viết
+
+      if(role.permissions.includes("settings"))
+        li
+          a(href=`/${prefixAdmin}/settings/general`) Cài đặt chung
