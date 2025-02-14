@@ -12,7 +12,7 @@ header.header
           action="/search"
           method="GET"
         ) 
-          div(class="form-group d-flex mb-0")
+          div(class="form-group d-flex mb-0 input-group")
             input(
               type="text"
               placeholder="Nhập từ khóa..."
@@ -21,10 +21,11 @@ header.header
               value=keyword
               required
             )
-            button(
-              type="submit"
-              class="btn btn-primary"
-            ) Tìm
+            .input-group-append
+              button(
+                type="submit"
+                class="btn btn-primary"
+              ) Tìm
 
       .col-4
         .inner-menu
@@ -36,9 +37,20 @@ header.header
               li
                 a(href="/cart") Giỏ hàng (#{miniCart ? miniCart.products.length : 0})
               li
-                a(href="/user/info") #{user.fullName}
-              li
-                a(href="/user/logout") Đăng xuất
+                //- a(href="/user/info") #{user.fullName}
+                div(class="user__dropdown")
+                  img(src=(user.avatar ? user.avatar : "/images/avatar.jpg"))
+                  .menu__dropdown
+                    h4 #{user.fullName}
+                    ul
+                      li
+                        a(href='/user/info') Profile
+                      li
+                        a(href='/purchase') Purchase
+                      li
+                        a(href='/user/change-pass') Change Password
+                      li
+                        a(href='/user/logout') Log Out
             else
               li
                 a(href="/user/login") Đăng nhập

@@ -28,7 +28,7 @@ module.exports.index = async (req, res) => {
   res.render("client/pages/products/index", {
     pageTitle: "Danh sách sản phẩm",
     products: products,
-    objectPagination: objectPagination
+    objectPagination: objectPagination,
   });
 };
 
@@ -69,6 +69,15 @@ module.exports.category = async (req, res) => {
   const listSubCategory = await getSubCategory(category.id);
   const listIdSubCategory = listSubCategory.map((item) => item.id);
 
+  // Pagination
+  const countRecords = await Product.countDocuments({
+    product_category_id: { $in: [category.id, ...listIdSubCategory] },
+    status: "active",
+    deleted: false,
+  });
+  const objectPagination = paginationHelper(req, countRecords, 6);
+  // End Pagination
+
   const products = await Product.find({
     product_category_id: { $in: [category.id, ...listIdSubCategory] },
     status: "active",
@@ -85,6 +94,7 @@ module.exports.category = async (req, res) => {
   res.render("client/pages/products/index", {
     pageTitle: category.title,
     products: products,
+    objectPagination: objectPagination,
   });
 };
 

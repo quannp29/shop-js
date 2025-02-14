@@ -1,0 +1,31 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main
+  .container.my-3
+    .row
+      .col-12
+        +box-head("Danh sách đơn hàng")
+
+    if(orders.length > 0)
+      .row
+        .col-12
+          table(class="table table-bordered")
+            thead
+              tr
+                th STT
+                th Ngày đặt hàng
+                th Trạng thái
+                th Tổng tiền
+                th Hành động
+            tbody
+              each item, index in orders
+                tr
+                  td #{index + 1}
+                  td #{moment(item.createdAt).format("DD-MM-YYYY HH:mm")}
+                  td #{item.status}
+                  td #{item.total}$
+                  td 
+                    a(href=`/purchase/detail/${item.id}` class="btn btn-info") Xem chi tiết
+    else 
+      h2 Chưa có đơn hàng nào

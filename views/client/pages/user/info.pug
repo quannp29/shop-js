@@ -1,10 +1,61 @@
 extends ../../layouts/default.pug
 include ../../mixins/box-head.pug
+include ../../mixins/alert.pug
 
 block main
+  +alert-success()
+  +alert-error()
+
   .container.my-3
     .row
       .col-12
         +box-head("Thông tin tài khoản")
-
-    div #{infoUser}
+    
+    form(
+      action=`/user/edit?_method=PATCH`
+      method="POST"
+      enctype="multipart/form-data"
+    )
+      div(class="form-group")
+        label(for="fullName") Họ tên *
+        input(
+          type="text"
+          class="form-control"
+          id="fullName"
+          name="fullName"
+          required
+          value=infoUser.fullName
+        )
+      div(class="form-group")
+        label(for="email") Email *
+        input(
+          type="email"
+          class="form-control"
+          id="email"
+          name="email"
+          required
+          value=infoUser.email
+        )
+      div(
+        class="form-group"
+        upload-image
+      )
+        label(for="avatar") Avatar
+        input(
+          type="file"
+          class="form-control-file"
+          id="avatar"
+          name="avatar"
+          accept="image/*"
+          upload-image-input
+        )
+        img(
+          src=(infoUser.avatar ? infoUser.avatar : "/images/avatar.jpg")
+          class="image-preview"
+          upload-image-preview
+        )
+      div(class="form-group")
+        button(
+          type="submit"
+          class="btn btn-primary"
+        ) Cập nhật

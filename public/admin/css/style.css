@@ -1,3 +1,26 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+:root {
+  --font: "Inter", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font);
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+
 /* Header */
 .header {
   background: #202020;
@@ -42,6 +65,9 @@
   display: block;
   padding: 6px 10px;
   border-bottom: 1px solid #515151;
+}
+.sider .inner-menu ul li a:hover {
+  color: #0D6EFD;
 }
 /* End Sider */
 

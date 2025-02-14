@@ -5,14 +5,14 @@ block main
   .container.my-3
     .row
       .col-12
-        +box-head("Đặt hàng thành công")
-
-    .row
-      .col-12
-        div(class="alert alert-success")
-          | Chúc mừng bạn đã đặt hàng thành công! Chúng tôi sẽ xử lý đơn hàng trong thời gian sớm nhất.
+        +box-head(pageTitle)
 
     if(order)
+      .row
+        .col-12
+          div(class="mb-3") 
+            h4 Trạng thái đơn hàng: #{order.status}
+
       .row
         .col-12
           h4(class="mb-2") Thông tin cá nhân

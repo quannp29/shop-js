@@ -17,6 +17,10 @@ const orderSchema = new mongoose.Schema(
         quantity: Number,
       },
     ],
+    status: {
+      type: String,
+      default: 'initial'
+    }
   },
   {
     timestamps: true,

@@ -47,3 +47,48 @@ if(listButtonPagination.length > 0) {
   });
 }
 // End Button Pagination
+
+// Dropdown user
+const avatarUser = document.querySelector(".header .inner-menu .user__dropdown img");
+if(avatarUser) {
+  avatarUser.addEventListener("click", () => {
+    const userDropdown = document.querySelector(".header .inner-menu .user__dropdown .menu__dropdown");
+    userDropdown.classList.toggle("active");
+  })
+}
+// End Dropdown user
+
+
+// upload-image
+const uploadImage = document.querySelector("[upload-image]");
+if(uploadImage) {
+  const uploadImageInput = uploadImage.querySelector("[upload-image-input]");
+  const uploadImagePreview = uploadImage.querySelector("[upload-image-preview]");
+  
+  uploadImageInput.addEventListener("change", () => {
+    const file = uploadImageInput.files[0];
+    if(file) {
+      uploadImagePreview.src = URL.createObjectURL(file);
+    }
+  });
+}
+// End upload-image
+
+// form-change-password
+const formChangePassword = document.querySelector('[form-change-password]');
+if(formChangePassword) {
+  formChangePassword.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    var newPass = formChangePassword.newPassword.value;
+    var confirmPass = formChangePassword.confirmPassword.value;
+
+    if(newPass !== confirmPass) {
+      alert("Xác nhận mật khẩu không khớp");
+      return;
+    }
+
+    formChangePassword.submit();
+  })
+}
+// End form-change-password
