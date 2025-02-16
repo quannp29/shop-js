@@ -23,7 +23,16 @@ block main
                 tr
                   td #{index + 1}
                   td #{moment(item.createdAt).format("DD-MM-YYYY HH:mm")}
-                  td #{item.status}
+                  td
+                    case item.status
+                      when "processing"
+                        span Đang xử lý
+                      when "delivering"
+                        span Đang giao
+                      when "completed"
+                        span Hoàn thành
+                      default 
+                        span Khởi tạo
                   td #{item.total}$
                   td 
                     a(href=`/purchase/detail/${item.id}` class="btn btn-info") Xem chi tiết

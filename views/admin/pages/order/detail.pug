@@ -1,0 +1,82 @@
+extends ../../layouts/default.pug
+
+block main
+  h1(class="mb-4") #{pageTitle}
+
+  if(order)
+    .row
+      .col-12
+        div(class="mb-3") 
+          h4 
+            | Trạng thái đơn hàng: 
+            case order.status
+              when "processing"
+                span Đang xử lý
+              when "delivering"
+                span Đang giao
+              when "completed"
+                span Hoàn thành
+              default 
+                span Khởi tạo
+
+    .row
+      .col-12
+        h4(class="mb-2") Thông tin cá nhân
+        table(class="table table-bordered")
+          tbody
+            tr
+              td Họ tên người đặt hàng
+              td
+                b #{order.user.fullName}
+            tr
+              td Email người đặt hàng
+              td
+                b #{order.user.email}
+            tr
+              td Avatar
+              td
+                img(width="80px" src=order.user.avatar) 
+            tr
+              td Họ tên người nhận
+              td
+                b #{order.userInfo.fullName}
+            tr
+              td Số điện thoại người nhận
+              td
+                b #{order.userInfo.phone}
+            tr
+              td Địa chỉ người nhận
+              td
+                b #{order.userInfo.address}
+
+    .row
+      .col-12
+        h4(class="mb-2") Thông tin đơn hàng
+        table(class="table table-bordered")
+          thead
+            tr
+              th STT
+              th Ảnh
+              th Tên
+              th Giá
+              th Số lượng
+              th Tổng tiền
+          tbody
+            if(order.products.length > 0)
+              each item, index in order.products
+                tr
+                  td #{index + 1}
+                  td
+                    img(
+                      src=item.thumbnail
+                      alt=item.title
+                      width="80px"
+                    )
+                  td #{item.title}
+                  td #{item.priceNew}$
+                  td #{item.quantity}
+                  td #{item.totalPrice}$
+
+
+        if(order.products.length > 0)
+          h3(class="text-right") Tổng đơn hàng: #{order.totalPrice}$

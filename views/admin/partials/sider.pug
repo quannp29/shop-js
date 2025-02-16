@@ -34,6 +34,9 @@
       if(role.permissions.includes("article_view"))
         li
           a(href=`/${prefixAdmin}/articles`) Bài viết
+        
+      li
+        a(href=`/${prefixAdmin}/orders`) Đơn hàng
 
       if(role.permissions.includes("settings"))
         li

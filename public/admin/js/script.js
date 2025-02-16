@@ -363,3 +363,32 @@ if(dataRecords) {
   })
 }
 // End Data default table permissions
+
+// Select Order Status
+const filterStatus = document.querySelector("[filterOrder]");
+if(filterStatus) {
+  let url = new URL(window.location.href);
+  const statusSelect = filterStatus.querySelector("[status-select]");
+
+  // Lắng nghe thay đổi trạng thái
+  statusSelect.addEventListener("change", () => {
+    const status = statusSelect.value;
+    
+    if(status) {
+      url.searchParams.set("status", status);
+    }
+    else {
+      url.searchParams.delete("status");
+    }
+    window.location.href = url.href;
+  });
+
+  // Thêm selected cho lựa chọn hiện tại
+  const selectedStatus = url.searchParams.get("status");
+  
+  if(selectedStatus) {
+    const optionSelected = statusSelect.querySelector(`option[value='${selectedStatus}']`);
+    optionSelected.selected = true;
+  }
+}
+// End Select OrderStatus

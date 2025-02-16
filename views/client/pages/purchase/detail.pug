@@ -11,7 +11,17 @@ block main
       .row
         .col-12
           div(class="mb-3") 
-            h4 Trạng thái đơn hàng: #{order.status}
+            h4 
+              | Trạng thái đơn hàng: 
+              case order.status
+                when "processing"
+                  span Đang xử lý
+                when "delivering"
+                  span Đang giao
+                when "completed"
+                  span Hoàn thành
+                default 
+                  span Khởi tạo
 
       .row
         .col-12
